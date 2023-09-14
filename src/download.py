@@ -1,5 +1,4 @@
 import urllib.request as request
-import json
 
 EMBED_URL = "http://fast.wistia.net/embed/iframe/"
 
@@ -9,5 +8,13 @@ if __name__ == "__main__":
   with open(file, "r", encoding="utf-8") as file_open:
     lines = file_open.readlines()
 
-  http = request.urlopen(EMBED_URL + lines[0].rstrip()).read().decode("utf-8")
+  # TODO: this should be a try block
+  # the video is found at line 63 in the html that is returned
+  html = request.urlopen(EMBED_URL + lines[0].rstrip()).read().decode("utf-8").split("\n")[63]
 
+  link_start = html.find("url") + 6
+  link_end = html.find(".bin", link_start) 
+
+  video_link = html[link_start : link_end] + ".mp4"
+
+  print(video_link)
