@@ -12,18 +12,18 @@ if __name__ == "__main__":
   with open(file, "r", encoding="utf-8") as file_open:
     lines = file_open.readlines()
 
-  # keeps track of the video that was download out of the total
+  # keeps track of the video downloaded out of the total videos
   video_num = 1
 
+  # TODO: really need to handle cases where video is not able to download. try blocks, maybe.
   for line in lines:
-    # TODO: really need to handle cases where video is not able to download. try blocks, maybe.
     line = line.rstrip()
     print(f"Downloading video ID [{video_num}/{len(lines)}]: {line}... ", end="", flush=True)
 
-    # the video is found at line 63 in the html that is returned as defined in global const
+    # the video is found at line 63 in the html that is returned. 63 is defined in global const
     html = request.urlopen(EMBED_URL + line).read().decode("utf-8").split("\n")[LINE_NUM]
 
-    # http:// begins after finding "url" and then skipping 6 chars defined in global const
+    # http:// begins after finding "url" and then skipping 6 chars. 6 is defined in global const
     link_start = html.find("url") + CHARS_TO_H
     link_end = html.find(".bin", link_start) 
 
