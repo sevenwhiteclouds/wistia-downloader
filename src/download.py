@@ -4,6 +4,7 @@ EMBED_URL = "http://fast.wistia.net/embed/iframe/"
 LINE_NUM = 63
 CHARS_TO_H = 6
 
+# TODO: modularity - change this to work as a module as well, not just as a standalone program
 if __name__ == "__main__":
   print("The txt file containing the IDs must be in the same directory as this program!")
   file = input("Enter file name: ")
