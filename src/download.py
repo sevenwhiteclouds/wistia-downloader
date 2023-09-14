@@ -1,6 +1,8 @@
 import urllib.request as request
 
 EMBED_URL = "http://fast.wistia.net/embed/iframe/"
+LINE_NUM = 63
+CHARS_TO_H = 6
 
 if __name__ == "__main__":
   print("The txt file containing the IDs must be in the same directory as this program!")
@@ -10,15 +12,18 @@ if __name__ == "__main__":
   with open(file, "r", encoding="utf-8") as file_open:
     lines = file_open.readlines()
 
+  # keeps track of the video that was download out of the total
+  video_num = 1
+
   for line in lines:
-    # TODO: this should probably really be a try block
+    # TODO: really need to handle cases where video is not able to download. try blocks, maybe.
     # the video is found at line 63 in the html that is returned
     line = line.rstrip()
-    print("Downloading video ID: " + line + "... ", end="", flush=True)
+    print(f"Downloading video ID [{video_num}/{len(lines)}]: {line}... ", end="", flush=True)
 
-    html = request.urlopen(EMBED_URL + line).read().decode("utf-8").split("\n")[63]
+    html = request.urlopen(EMBED_URL + line).read().decode("utf-8").split("\n")[LINE_NUM]
 
-    link_start = html.find("url") + 6
+    link_start = html.find("url") + CHARS_TO_H
     link_end = html.find(".bin", link_start) 
 
     video_link = html[link_start : link_end] + ".mp4"
@@ -26,4 +31,6 @@ if __name__ == "__main__":
 
     with open((line + ".mp4"), "wb") as save_video:
       save_video.write(video.read())
+
     print("done!")
+    video_num += 1
