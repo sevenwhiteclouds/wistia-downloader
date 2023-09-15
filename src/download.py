@@ -32,7 +32,6 @@ async def downloader(vid_id):
 
     await event_loop.run_in_executor(None, file_write.write, chunk)
 
-
   print("Video downloaded!")
   await event_loop.run_in_executor(None, file_write.close)
 
